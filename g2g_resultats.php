@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 	try
 	{
 		// On se connecte à MySQL
-		$bdd = new PDO('mysql:host=localhost:3306;dbname=bars;charset=utf8', 'grapeglapuperson', 'QEiw7dFQutLb', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+		$bdd = new PDO('mysql:host=localhost:3306;dbname=bars;charset=utf8', 'login', 'mdp', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 	}
 	catch (Exception $e)
 	{
