@@ -18,11 +18,11 @@ error_reporting(E_ALL);
 	catch (Exception $e)
 	{
 		// En cas d'erreur, on affiche un message et on arrête tout
-
 		die('Erreur : ' . $e->getMessage());
 	}
 	?>
 
+	<!-- J'affiche la première partie de la page de résultats -->
 	<div style="margin:20px;">
 	<h1 style="text-align: center;">Grappe 2 Glass</h1>
 
@@ -37,7 +37,7 @@ error_reporting(E_ALL);
 
 	<?php
 
-
+	// je récupère tous les bars ayant la catégorie demandée par l'utilisateur
 	$reponse = $bdd->prepare(
 		'SELECT *
 		FROM BARS WHERE (Category_1 = ? OR Category_2 = ?)'
@@ -46,10 +46,9 @@ error_reporting(E_ALL);
 		array($_POST['categorie'], $_POST['categorie'])
 	); 
 
+
+
 	while ($donnees = $reponse->fetch(PDO::FETCH_ASSOC)) {
-
-
-//	echo '<li>' . $donnees['ID'] .', ' . $donnees['Name'] .', '. $donnees['Category_1'] .', '. $donnees['Ambiance_1'] . ', ' . $donnees['Feature_1'] . ', ' . $donnees['Occasion_1'] .'</li>';
 
 	$donnees['ambiances'] = array_filter([$donnees['Ambiance_1'], $donnees['Ambiance_2'], $donnees['Ambiance_3']]);
 	$donnees['occasions'] = array_filter([$donnees['Occasion_1'], $donnees['Occasion_2'], $donnees['Occasion_3'], $donnees['Occasion_4'], $donnees['Occasion_5']]);
@@ -66,21 +65,30 @@ $features  = array_filter([$_POST['feature1'], $_POST['feature2'], $_POST['featu
 
 foreach ($monTableau as $key => $value) 
 {
+	//Je compte le nombre d'intersections de valeur entre les tableaux venant de l'utilisateur et de chaque bars
 
 	$interesection_ambiances = array_intersect($ambiances, $value['ambiances']);
 	$interesection_occasions = array_intersect($occasions, $value['occasions']);
 	$interesection_features	 = array_intersect($features, $value['features']);
 
+	//Le calcul de la taille des tableaux me donne le nombre de point dans $value['value']
+
 	$monTableau[$key]['value'] = count($interesection_ambiances) + count($interesection_occasions) + count($interesection_features);
 
 }
 
+	//fontion de tri
+
 function sort_values($a, $b){
 	return $a["value"]<$b["value"]?1:0;
 }
+	
+	//je classe le tableau selon le nombre de point
 
 usort($monTableau, "sort_values");
-echo json_encode($monTableau, JSON_PRETTY_PRINT);
+
+	//Test
+	//echo json_encode($monTableau, JSON_PRETTY_PRINT);
 
 
 echo "<ol>";
@@ -93,6 +101,9 @@ foreach ($monTableau as $key => $value)
 		exit();
 	}
 	else{
+
+		//j'affiche tous les résultats ayant au moins 1 point
+
 	for ($i= $value['value'] ; $i >0 ; $i--) { 
 	echo "<li>";
 	echo '<p> <!-- ID=' . $value['ID'] .',' .'ID' . $key . "--><b>" . '<div style="width:60%;">' . $value['Name'] .'</b>, '. $value['Address'].'<br> '. $value['Category_1'] . ', ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>' . '<span  style="font-style: italic;">'. $value['Description'] .'</p>'. '<span style="visibility: hidden;"> points :' . $value['value'] . '</span>' . '</div>';
