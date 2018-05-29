@@ -119,8 +119,10 @@ foreach ($monTableau as $key => $value)
 
 			echo ', ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>'; 
 
+			//affiche l'occasion 1
 			echo 'Adapté pour y aller avec : ' . $value['Occasion_1'];
 
+			//affiche les autres occasions si elles existent
 			if(!empty($value['Occasion_2'])){
 				echo ' ou ' . $value['Occasion_2'];
 			}
