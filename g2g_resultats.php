@@ -100,13 +100,13 @@ foreach ($monTableau as $key => $value)
 		{
 			echo "<li>";
 			if($value['value'] > 1){
-				echo '<div style="width:60%; border-bottom: 2px solid green; margin-bottom: 10px;" class = "compatible" >';
+				echo '<div style="width:60%; border-bottom: 10px solid green; margin-bottom: 10px;" class = "compatible" >';
 			}
 			if($value['value'] == 1){
-				echo '<div style="width:60%; border-bottom: 2px solid yellow; margin-bottom: 10px;" class = "bon" >';
+				echo '<div style="width:60%; border-bottom: 10px solid yellow; margin-bottom: 10px;" class = "bon" >';
 			}
 			if($value['value'] < 1){
-				echo '<div style="width:60%; border-bottom: 2px solid red; margin-bottom: 10px;" class = "mauvais">';
+				echo '<div style="width:60%; border-bottom: 10px solid red; margin-bottom: 10px;" class = "mauvais">';
 			}
 
 			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . $value['Category_1'];
@@ -117,23 +117,41 @@ foreach ($monTableau as $key => $value)
 				echo ' & ' . $value['Category_2'];
 			}
 
+			//J'affiche les 3 ambiances
 			echo ', ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>'; 
 
-			//affiche l'occasion 1
-			echo 'Adapté pour y aller avec : ' . $value['Occasion_1'];
 
-			//affiche les autres occasions si elles existent
-			if(!empty($value['Occasion_2'])){
-				echo ' ou ' . $value['Occasion_2'];
+			//Si il a une feature 1, alors il l'affiche
+			if(!empty($value['Feature_1'])){
+				echo 'Possède : ' . $value['Feature_1'];
+
+				//si le bar possède des feature 2 & 3, alors il les affiche
+				if(!empty($value['Feature_2'])){
+					echo ' et ' . $value['Feature_2'];
+				}
+				if(!empty($value['Feature_3'])){
+					echo ' et ' . $value['Feature_3'];
+				}
+				echo '<br>';
 			}
-			if(!empty($value['Occasion_3'])){
-				echo ' ou ' . $value['Occasion_3'];
-			}
-			if(!empty($value['Occasion_4'])){
-				echo ' ou ' . $value['Occasion_4'];
-			}
-			if(!empty($value['Occasion_5'])){
-				echo ' ou ' . $value['Occasion_5'];
+
+			//Si il a une occasion 1, alors il l'affiche
+			if(!empty($value['Occasion_1'])){
+				echo 'Adapté pour y aller avec : ' . $value['Occasion_1'];
+
+				//Si il y a des occasions 2, 3, 4 ou 5, alors il les affiche
+				if(!empty($value['Occasion_2'])){
+					echo ' ou ' . $value['Occasion_2'];
+				}
+				if(!empty($value['Occasion_3'])){
+					echo ' ou ' . $value['Occasion_3'];
+				}
+				if(!empty($value['Occasion_4'])){
+					echo ' ou ' . $value['Occasion_4'];
+				}
+				if(!empty($value['Occasion_5'])){
+					echo ' ou ' . $value['Occasion_5'];
+				}
 			}
 
 			echo '<br><br>' . '<p>' . '<span style="font-style: italic; padding-top: 15px;">'. $value['Description'] . '</span>' . '<br/><br/> <span>' . 'Score : ' . $value['value'] . '</span>' . '</p>' . '</div>';
