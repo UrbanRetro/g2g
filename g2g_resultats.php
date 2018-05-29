@@ -6,6 +6,7 @@
 	<title>Grape2Glass</title>
 	<link rel="icon" type="image/png" href="assets/images/Black_Short_WEB.png" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
@@ -22,20 +23,8 @@
 	<hr>
 
 <?php
-
-error_reporting(E_ALL);
-	try
-	{
-		// On se connecte à MySQL
-		$bdd = new PDO('mysql:host=localhost:3306;dbname=G2G;charset=utf8', 'login', 'mdp', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-	}
-	catch (Exception $e)
-	{
-		// En cas d'erreur, on affiche un message et on arrête tout
-
-		die('Erreur : ' . $e->getMessage());
-	}
-	?>
+	include("config.php");
+?>
 
 	<?php
 
@@ -49,9 +38,6 @@ error_reporting(E_ALL);
 	); 
 
 	while ($donnees = $reponse->fetch(PDO::FETCH_ASSOC)) {
-
-
-//	echo '<li>' . $donnees['ID'] .', ' . $donnees['Name'] .', '. $donnees['Category_1'] .', '. $donnees['Ambiance_1'] . ', ' . $donnees['Feature_1'] . ', ' . $donnees['Occasion_1'] .'</li>';
 
 	$donnees['ambiances'] = array_filter([$donnees['Ambiance_1'], $donnees['Ambiance_2'], $donnees['Ambiance_3']]);
 	$donnees['occasions'] = array_filter([$donnees['Occasion_1'], $donnees['Occasion_2'], $donnees['Occasion_3'], $donnees['Occasion_4'], $donnees['Occasion_5']]);
@@ -100,16 +86,16 @@ foreach ($monTableau as $key => $value)
 		{
 			echo "<li>";
 			if($value['value'] > 1){
-				echo '<div style="width:60%; border-bottom: 10px solid green; margin-bottom: 10px;" class = "compatible" >';
+				echo '<div class = "compatible" >';
 			}
 			if($value['value'] == 1){
-				echo '<div style="width:60%; border-bottom: 10px solid yellow; margin-bottom: 10px;" class = "bon" >';
+				echo '<div class = "bon" >';
 			}
 			if($value['value'] < 1){
-				echo '<div style="width:60%; border-bottom: 10px solid red; margin-bottom: 10px;" class = "mauvais">';
+				echo '<div class = "mauvais">';
 			}
 
-			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . $value['Category_1'];
+			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : ' . $value['Category_1'];
 
 			//si la Category_2 existe, alors on l'affiche
 			if(!empty($value['Category_2'])){
@@ -118,12 +104,12 @@ foreach ($monTableau as $key => $value)
 			}
 
 			//J'affiche les 3 ambiances
-			echo ', ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>'; 
+			echo '<br> l\'ambiance y est :  ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>'; 
 
 
 			//Si il a une feature 1, alors il l'affiche
 			if(!empty($value['Feature_1'])){
-				echo 'Possède : ' . $value['Feature_1'];
+				echo 'Il possède : ' . $value['Feature_1'];
 
 				//si le bar possède des feature 2 & 3, alors il les affiche
 				if(!empty($value['Feature_2'])){
@@ -137,7 +123,7 @@ foreach ($monTableau as $key => $value)
 
 			//Si il a une occasion 1, alors il l'affiche
 			if(!empty($value['Occasion_1'])){
-				echo 'Adapté pour y aller avec : ' . $value['Occasion_1'];
+				echo 'Et il est idéalement adapté pour y aller avec : ' . $value['Occasion_1'];
 
 				//Si il y a des occasions 2, 3, 4 ou 5, alors il les affiche
 				if(!empty($value['Occasion_2'])){
