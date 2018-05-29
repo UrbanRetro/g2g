@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 	try
 	{
 		// On se connecte à MySQL
-		$bdd = new PDO('mysql:host=localhost:3306;dbname=G2G;charset=utf8', 'login', 'mdp', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+		$bdd = new PDO('mysql:host=localhost:3306;dbname=G2G;charset=utf8', 'Tanguy', 'Fw2pe5!0', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 	}
 	catch (Exception $e)
 	{
@@ -100,16 +100,16 @@ foreach ($monTableau as $key => $value)
 		{
 			echo "<li>";
 			if($value['value'] > 1){
-				echo '<div style="width:60%; border-bottom: 2px solid green; margin-bottom: 10px;" class = "compatible" ><p>';
+				echo '<div style="width:60%; border-bottom: 2px solid green; margin-bottom: 10px;" class = "compatible" >';
 			}
 			if($value['value'] == 1){
-				echo '<div style="width:60%; border-bottom: 2px solid yellow; margin-bottom: 10px;" class = "bon" ><p>';
+				echo '<div style="width:60%; border-bottom: 2px solid yellow; margin-bottom: 10px;" class = "bon" >';
 			}
 			if($value['value'] < 1){
-				echo '<div style="width:60%; border-bottom: 2px solid red; margin-bottom: 10px;" class = "mauvais"><p>';
+				echo '<div style="width:60%; border-bottom: 2px solid red; margin-bottom: 10px;" class = "mauvais">';
 			}
 
-			echo ' <!-- ID=' . $value['ID'] .',' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'].'<br> '. $value['Category_1'];
+			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . $value['Category_1'];
 
 			//si la Category_2 existe, alors on l'affiche
 			if(!empty($value['Category_2'])){
@@ -117,7 +117,24 @@ foreach ($monTableau as $key => $value)
 				echo ' & ' . $value['Category_2'];
 			}
 
-			echo ', ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>' . '<span style="font-style: italic;">'. $value['Description'] . '</span>' . '<br/><br/> <span>' . 'Score : ' . $value['value'] . '</span>' . '</p>' . '</div>';
+			echo ', ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>'; 
+
+			echo 'Adapté pour y aller avec : ' . $value['Occasion_1'];
+
+			if(!empty($value['Occasion_2'])){
+				echo ' ou ' . $value['Occasion_2'];
+			}
+			if(!empty($value['Occasion_3'])){
+				echo ' ou ' . $value['Occasion_3'];
+			}
+			if(!empty($value['Occasion_4'])){
+				echo ' ou ' . $value['Occasion_4'];
+			}
+			if(!empty($value['Occasion_5'])){
+				echo ' ou ' . $value['Occasion_5'];
+			}
+
+			echo '<br><br>' . '<p>' . '<span style="font-style: italic; padding-top: 15px;">'. $value['Description'] . '</span>' . '<br/><br/> <span>' . 'Score : ' . $value['value'] . '</span>' . '</p>' . '</div>';
 
 			echo "</li>";
 			//on incrémente le compteur
