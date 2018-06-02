@@ -44,7 +44,7 @@
 	$donnees['features']  = array_filter([$donnees['Feature_1'], $donnees['Feature_2'], $donnees['Feature_3']]);
 
 	$monTableau[] = $donnees;
-}
+	}
 
 $ambiances = array_filter([$_POST['ambiance1'], $_POST['ambiance2'], $_POST['ambiance3']]);
 $occasions = array_filter([$_POST['occasion']]);
@@ -59,7 +59,7 @@ foreach ($monTableau as $key => $value)
 	$interesection_occasions = array_intersect($occasions, $value['occasions']);
 	$interesection_features	 = array_intersect($features, $value['features']);
 
-	$monTableau[$key]['value'] = count($interesection_ambiances) + count($interesection_occasions) + count($interesection_features);
+	$monTableau[$key]['value'] = count($interesection_ambiances) + count($interesection_occasions) + count($interesection_features) + 1;
 
 }
 
@@ -95,52 +95,131 @@ foreach ($monTableau as $key => $value)
 				echo '<div class = "mauvais">';
 			}
 
-			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : ' . $value['Category_1'];
+			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : '; 
 
+			if($value['Category_1'] == $_POST['categorie']) {
+				echo '<span class="underline">' . $value['Category_1'] . '</span>';
+			}
+			else{
+				echo $value['Category_1'];
+			}
+			
 			//si la Category_2 existe, alors on l'affiche
 			if(!empty($value['Category_2'])){
-
+				//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+				if($value['Category_2'] == $_POST['categorie']) {
+					echo ' & ' . '<span class="underline">' . $value['Category_2'] .'</span>';
+				}
+				else{
 				echo ' & ' . $value['Category_2'];
+				}
 			}
-
-			//J'affiche les 3 ambiances
-			echo '<br> l\'ambiance y est :  ' . $value['Ambiance_1'] . ', ' . $value['Ambiance_2'] . ' & ' . $value['Ambiance_3'] . '<br>'; 
-
+			
+			echo '<br> L\'ambiance y est :  ';
+			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+			if($value['Ambiance_1'] == $_POST['ambiance1'] OR $value['Ambiance_1'] == $_POST['ambiance2'] OR $value['Ambiance_1'] == $_POST['ambiance3']){
+			 	echo '<span class="underline">' . $value['Ambiance_1'] . '</span>' . ', ';
+			}
+			else{
+			 	echo $value['Ambiance_1'] . ', ';
+			}
+			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+			if($value['Ambiance_2'] == $_POST['ambiance1'] OR $value['Ambiance_2'] == $_POST['ambiance2'] OR $value['Ambiance_2'] == $_POST['ambiance3']){
+			 	echo '<span class="underline">' . $value['Ambiance_2'] . '</span>' . ' & ';
+			}
+			else{
+			 echo $value['Ambiance_2'] . ' & ';
+			}
+			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+			if($value['Ambiance_3'] == $_POST['ambiance1'] OR $value['Ambiance_3'] == $_POST['ambiance2'] OR $value['Ambiance_3'] == $_POST['ambiance3']){
+			 	echo '<span class="underline">' . $value['Ambiance_3'] . '</span>' . '<br>';
+			}
+			else{
+			 	echo $value['Ambiance_3'] . '<br>';
+			}
 
 			//Si il a une feature 1, alors il l'affiche
 			if(!empty($value['Feature_1'])){
-				echo 'Il possède : ' . $value['Feature_1'];
-
+				//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+				if ($value['Feature_1'] == $_POST['feature1'] OR $value['Feature_1'] == $_POST['feature2'] OR $value['Feature_1'] == $_POST['feature3']) {
+					echo 'Il possède : ' . '<span class=underline>' . $value['Feature_1'] . '</span>';
+				}
+				else{
+					echo 'Il possède : ' . $value['Feature_1'];
+				}
 				//si le bar possède des feature 2 & 3, alors il les affiche
 				if(!empty($value['Feature_2'])){
+					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+					if ($value['Feature_2'] == $_POST['feature1'] OR $value['Feature_2'] == $_POST['feature2'] OR $value['Feature_2'] == $_POST['feature3']) {
+					echo ' et ' . '<span class=underline>' . $value['Feature_2'] . '</span>';
+				}
+					else{
 					echo ' et ' . $value['Feature_2'];
+					}
 				}
 				if(!empty($value['Feature_3'])){
-					echo ' et ' . $value['Feature_3'];
+					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+					if ($value['Feature_3'] == $_POST['feature1'] OR $value['Feature_3'] == $_POST['feature2'] OR $value['Feature_3'] == $_POST['feature3']) {
+					echo ' et ' . '<span class="underline">' . $value['Feature_3'] . '</span>';
 				}
+					else{
+					echo ' et ' . $value['Feature_3'];
+					}
+				}	
 				echo '<br>';
 			}
 
 			//Si il a une occasion 1, alors il l'affiche
 			if(!empty($value['Occasion_1'])){
-				echo 'Et il est idéalement adapté pour y aller avec : ' . $value['Occasion_1'];
+				echo 'Et il est idéalement adapté pour y aller avec : ';
+
+				if ($value['Occasion_1'] == $_POST['occasion']) {
+				 	echo '<span class="underline">' . $value['Occasion_1'] . '</span>';
+				 } 
+				 else{
+				 	echo $value['Occasion_1'];
+				 }
 
 				//Si il y a des occasions 2, 3, 4 ou 5, alors il les affiche
 				if(!empty($value['Occasion_2'])){
-					echo ' ou ' . $value['Occasion_2'];
+					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+					if($value['Occasion_2'] == $_POST['occasion']){
+						echo ' ou ' . '<span class="underline">' . $value['Occasion_2'] . '</span>';
+					}
+					else{
+						echo ' ou ' . $value['Occasion_2'];
+					}
 				}
 				if(!empty($value['Occasion_3'])){
+					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+					if($value['Occasion_3'] == $_POST['occasion']){
+						echo ' ou ' . '<span class="underline">' . $value['Occasion_3'] . '</span>';
+					}
+					else{
 					echo ' ou ' . $value['Occasion_3'];
+					}
 				}
 				if(!empty($value['Occasion_4'])){
+					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+					if($value['Occasion_4'] == $_POST['occasion']){
+						echo ' ou ' . '<span class="underline">' . $value['Occasion_4'] . '</span>';
+					}
+					else{
 					echo ' ou ' . $value['Occasion_4'];
+					}
 				}
 				if(!empty($value['Occasion_5'])){
+					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
+					if($value['Occasion_5'] == $_POST['occasion']){
+						echo ' ou ' . '<span class="underline">' .$value['Occasion_5'] . '</span>';
+					}
+					else{
 					echo ' ou ' . $value['Occasion_5'];
+					}
 				}
 			}
 
-			echo '<br><br>' . '<p>' . '<span style="font-style: italic; padding-top: 15px;">'. $value['Description'] . '</span>' . '<br/><br/> <span>' . 'Score : ' . $value['value'] . '</span>' . '</p>' . '</div>';
+			echo '<br><br>' . '<p class="description">'. $value['Description'] . '</p> <span>' . 'Score : ' . $value['value'] . '</span>' . '</div>';
 
 			echo "</li>";
 			//on incrémente le compteur
