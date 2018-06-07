@@ -5,6 +5,7 @@
 	<meta charset="utf-8" />
 	<title>Grape2Glass</title>
 	<link rel="icon" type="image/png" href="assets/images/Black_Short_WEB.png" />
+	<link rel="stylesheet" type="text/css" href="assets/css/style-index.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,9 +16,17 @@
 	<div style="margin:20px;">
 	<p>Bonjour !</p>
 
-	<p>Tu recherches un bar de type <b><?php echo htmlspecialchars($_POST['categorie']); ?></b> avec une ambiance <b><?php echo htmlspecialchars($_POST['ambiance1'])?></b> et <b><?php echo htmlspecialchars($_POST['ambiance2'])?></b> ainsi que <b><?php echo htmlspecialchars($_POST['ambiance3'])?></b> pour y aller <b><?php echo htmlspecialchars($_POST['occasion'])?></b> </p>
+	<p>Tu recherches un bar de type <b><?php echo htmlspecialchars($_POST['categorie']); ?></b> avec une ambiance <?php 
+		foreach($_POST['ambiance'] as $ambiance) 
+			echo '<b>' . $ambiance . '</b>' . ', ' ;
+		?>
+		pour y aller <b><?php echo htmlspecialchars($_POST['occasion'])?></b> </p>
 
-	<p>le bar idéal a les caractéristiques suivantes : <b><?php echo htmlspecialchars($_POST['feature1'])?></b>, <B><?php echo htmlspecialchars($_POST['feature2'])?></B> et <b><?php echo htmlspecialchars($_POST['feature3'])?></b></p>
+	<p>le bar idéal a les caractéristiques suivantes : <?php
+		foreach ($_POST['feature'] as $feature)
+			echo '<b>' . $feature . '</b>' . ', ' ;
+		?>
+	</p>
 
 	<p>Si tu veux changer de description, <a href="index.php">clique ici</a> pour revenir à la page formulaire.php.</p></div>
 	<hr>
@@ -27,7 +36,6 @@
 ?>
 
 	<?php
-
 
 	$reponse = $bdd->prepare(
 		'SELECT *
@@ -46,20 +54,27 @@
 	$monTableau[] = $donnees;
 	}
 
-$ambiances = array_filter([$_POST['ambiance1'], $_POST['ambiance2'], $_POST['ambiance3']]);
-$occasions = array_filter([$_POST['occasion']]);
-$features  = array_filter([$_POST['feature1'], $_POST['feature2'], $_POST['feature3']]);
+$ambiances = $_POST['ambiance'];
+$occasions = $_POST['occasion'];
+$features  = $_POST['feature'];
+
+$nbr_ambiances = count($ambiances);
+$nbr_occasions = count($occasions);
+$nbr_features = count($features);
+
+//Calcul du nombre d'arguments donnés par l'utilisateur
+$taille_arguments = $nbr_ambiances + $nbr_occasions + $nbr_features;
 
 
 
 foreach ($monTableau as $key => $value) 
 {
-
+	//comparaison des caractéristiques des bars et des demandes de l'utilisateur, attribution des points
 	$interesection_ambiances = array_intersect($ambiances, $value['ambiances']);
 	$interesection_occasions = array_intersect($occasions, $value['occasions']);
 	$interesection_features	 = array_intersect($features, $value['features']);
 
-	$monTableau[$key]['value'] = count($interesection_ambiances) + count($interesection_occasions) + count($interesection_features) + 1;
+	$monTableau[$key]['value'] = count($interesection_ambiances) + count($interesection_occasions) + count($interesection_features);
 
 }
 
@@ -71,10 +86,17 @@ usort($monTableau, "sort_values");
 //echo json_encode($monTableau, JSON_PRETTY_PRINT);
 
 
+
 echo "<ol>";
 
 //initialisation du compteur
 $cpt = 0;
+$have_element = 0;
+$info_maps = [];
+
+if(!$monTableau){
+	echo "Nous n'avons pas trouvé de résultats";
+}
 
 foreach ($monTableau as $key => $value) 
 {
@@ -84,16 +106,24 @@ foreach ($monTableau as $key => $value)
 		//On change la class de la div selon le nombre de points
 		if ($value['value'] > 'O')
 		{
+			$have_element = 1;
+
 			echo "<li>";
-			if($value['value'] > 1){
+			if($value['value'] > 0.66 * $taille_arguments ){
 				echo '<div class = "compatible" >';
 			}
-			if($value['value'] == 1){
+			if($value['value'] >= 0.33 * $taille_arguments && $value['value'] <= 0.66 * $taille_arguments){
 				echo '<div class = "bon" >';
 			}
-			if($value['value'] < 1){
+			if($value['value'] < 0.33 * $taille_arguments){
 				echo '<div class = "mauvais">';
 			}
+
+			//recherche des posotions geographiques (lat & long) du bar depuis le service api-adresse.data.gouv.fr en rentrant l'adresse sur laquelle on a remplacé les espaces par des '+'.
+			$position = json_decode(file_get_contents("https://api-adresse.data.gouv.fr/search/?q=" . str_replace(' ', '+', $value['Address'])), true);
+
+			//Création d'un tableau associant le nom du bar et sa position geographique
+			$info_maps[] = ['coordinates' => $position['features'][0]['geometry']['coordinates'], 'Name' => $value['Name']];
 
 			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : '; 
 
@@ -117,21 +147,21 @@ foreach ($monTableau as $key => $value)
 			
 			echo '<br> L\'ambiance y est :  ';
 			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
-			if($value['Ambiance_1'] == $_POST['ambiance1'] OR $value['Ambiance_1'] == $_POST['ambiance2'] OR $value['Ambiance_1'] == $_POST['ambiance3']){
+			if($value['Ambiance_1'] == $ambiances[0] OR $value['Ambiance_1'] == $ambiances[1] OR $value['Ambiance_1'] == $ambiances[2]){
 			 	echo '<span class="underline">' . $value['Ambiance_1'] . '</span>' . ', ';
 			}
 			else{
 			 	echo $value['Ambiance_1'] . ', ';
 			}
 			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
-			if($value['Ambiance_2'] == $_POST['ambiance1'] OR $value['Ambiance_2'] == $_POST['ambiance2'] OR $value['Ambiance_2'] == $_POST['ambiance3']){
+			if($value['Ambiance_2'] == $ambiances[0] OR $value['Ambiance_2'] == $ambiances[1] OR $value['Ambiance_2'] == $ambiances[2]){
 			 	echo '<span class="underline">' . $value['Ambiance_2'] . '</span>' . ' & ';
 			}
 			else{
 			 echo $value['Ambiance_2'] . ' & ';
 			}
 			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
-			if($value['Ambiance_3'] == $_POST['ambiance1'] OR $value['Ambiance_3'] == $_POST['ambiance2'] OR $value['Ambiance_3'] == $_POST['ambiance3']){
+			if($value['Ambiance_3'] == $ambiances[0] OR $value['Ambiance_3'] == $ambiances[1] OR $value['Ambiance_3'] == $ambiances[2]){
 			 	echo '<span class="underline">' . $value['Ambiance_3'] . '</span>' . '<br>';
 			}
 			else{
@@ -141,7 +171,7 @@ foreach ($monTableau as $key => $value)
 			//Si il a une feature 1, alors il l'affiche
 			if(!empty($value['Feature_1'])){
 				//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
-				if ($value['Feature_1'] == $_POST['feature1'] OR $value['Feature_1'] == $_POST['feature2'] OR $value['Feature_1'] == $_POST['feature3']) {
+				if ($value['Feature_1'] == $features[0] OR $value['Feature_1'] == $features[1] OR $value['Feature_1'] == $features[2]) {
 					echo 'Il possède : ' . '<span class=underline>' . $value['Feature_1'] . '</span>';
 				}
 				else{
@@ -150,7 +180,7 @@ foreach ($monTableau as $key => $value)
 				//si le bar possède des feature 2 & 3, alors il les affiche
 				if(!empty($value['Feature_2'])){
 					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
-					if ($value['Feature_2'] == $_POST['feature1'] OR $value['Feature_2'] == $_POST['feature2'] OR $value['Feature_2'] == $_POST['feature3']) {
+					if ($value['Feature_2'] == $features[0] OR $value['Feature_2'] == $features[1] OR $value['Feature_2'] == $features[2]) {
 					echo ' et ' . '<span class=underline>' . $value['Feature_2'] . '</span>';
 				}
 					else{
@@ -159,7 +189,7 @@ foreach ($monTableau as $key => $value)
 				}
 				if(!empty($value['Feature_3'])){
 					//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
-					if ($value['Feature_3'] == $_POST['feature1'] OR $value['Feature_3'] == $_POST['feature2'] OR $value['Feature_3'] == $_POST['feature3']) {
+					if ($value['Feature_3'] == $features[0] OR $value['Feature_3'] == $features[1] OR $value['Feature_3'] == $features[2]) {
 					echo ' et ' . '<span class="underline">' . $value['Feature_3'] . '</span>';
 				}
 					else{
@@ -225,7 +255,7 @@ foreach ($monTableau as $key => $value)
 			//on incrémente le compteur
 			$cpt++;
 		}
-		else
+		elseif ($have_element === 0)
 		{
 			echo "Désolé, nous n'avons pas de résultats pour cette recherche.";
 			break;
@@ -239,6 +269,63 @@ foreach ($monTableau as $key => $value)
 }
 echo "</ol>";
 ?>
+
+<!-- Appel de la carte Gmap-->
+<div id="map"></div>
+<?php
+
+//Début du script Gmap
+   echo "<script>
+            function initMap() {
+
+              //Affichage de la carte focus sur Paris
+              var myLatLng = {lat: 48.86, lng: 2.34};
+
+              // Create a map object and specify the DOM element
+              // for display.
+              var map = new google.maps.Map(document.getElementById('map'), {
+                center: myLatLng,
+                zoom: 13
+              });";
+
+    //Récuperation des infos de geolocalisation des bars
+    foreach ($info_maps as $i => $info) {
+    	echo "var contentString_$i = '<div id=\"content\">'+
+            '<div id=\"siteNotice\">'+
+            '</div>'+
+            '<h1 id=\"firstHeading\" class=\"firstHeading\">" . $info['Name'] . "</h1>'+
+            '<div id=\"bodyContent\">'+
+            '</div>'+
+            '</div>';";
+
+    	echo "var infowindow_$i = new google.maps.InfoWindow({
+          content: contentString_$i
+        	});";
+		
+        echo "// Create a marker and set its position.
+                var marker_$i = new google.maps.Marker({
+                  map: map,
+                  position: {lat: " . $info['coordinates'][1] . ", lng: " .$info['coordinates'][0] ."},
+                  title: '" . $info['Name'] . "'
+                });
+              ";
+        echo "marker_$i.addListener('click', function() {
+          infowindow_$i.open(map, marker_$i);
+        });";
+				
+  	}
+      echo "}</script>";
+ ?>
+
+<!-- Appel du footer -->
+<?php
+include("footer.php");
+?>
+
+<!-- API Key pour Gmap -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD12uBzc9KfSwdhQ7HcqGE1KYenmITS180&callback=initMap"
+        async defer></script>
+
 
 </body>
 </html>
