@@ -1,0 +1,35 @@
+.compatible {
+	border-bottom: 10px solid green;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+.bon{
+	border-bottom: 10px solid yellow;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+.mauvais{
+	border-bottom: 10px solid red;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+
+.description{
+	font-style: italic;
+	padding-top: 15px;
+}
+.underline{
+	text-decoration: underline;
+}
+
+#map {
+    height: 600px;
+    position: sticky!important;
+    top : 0;
+    left : 0px;
+    width: 100%;
+}
+
+.firstHeading{
+	font-size: 1.5rem;
+}

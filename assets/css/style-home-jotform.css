@@ -1,0 +1,954 @@
+/*
+
+Created by : jotform.com
+Edited by : Tanguy PERODEAU;
+
+*/
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:light,lightitalic,normal,italic,bold,bolditalic");
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4)
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 9px rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 9px rgba(255, 255, 255, 0)
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0)
+    }
+}
+
+@keyframes pulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4)
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 9px rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 9px rgba(255, 255, 255, 0)
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0)
+    }
+}
+
+.jfProgress-itemCircle,
+.jfProgress-itemCircle:after {
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .08), 0 3px 6px rgba(0, 0, 0, .15);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .08), 0 3px 6px rgba(0, 0, 0, .15)
+}
+
+.jfProgress-itemWrapperLine {
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .05), 0 1px 2px rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .05), 0 1px 2px rgba(0, 0, 0, .1)
+}
+
+.jfProgress-itemPulse {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4)
+}
+
+.jfProgress-info {
+    color: #000
+}
+
+.jfProgress-itemWrapperLine {
+    background-color: #bfcbd8
+}
+
+.jfProgress-itemLabel {
+    background-color: rgba(0, 0, 0, .7);
+    color: rgba(255, 255, 255, 0.8)
+}
+
+.jfProgress-itemCircle {
+    background-color: #fff
+}
+
+.jfProgress-item.isValid .jfProgress-itemCircle {
+    background-color: #6dbd00;
+    border: 1px solid #fff
+}
+
+.jfProgress-item.hasError .jfProgress-statusIcon {
+    background-color: #e34343
+}
+
+.jfProgress-item.hasError .jfProgress-itemCircle {
+    background-color: #e34343;
+    border: 1px solid #fff
+}
+
+.jfProgress-item.hasError:not(.isActive) .jfProgress-itemPulse {
+    -webkit-animation: pulse 3s infinite;
+    animation: pulse 3s infinite
+}
+
+.jfProgress-item.isActive .jfProgress-itemCircle {
+    background-color: #fff
+}
+
+.jfProgress-item.isActive .jfProgress-itemCircle:after {
+    border: 1px solid #fff;
+    background-color: #f0a719
+}
+
+.jfProgress-item.isActive.hasError .jfProgress-statusIcon {
+    background-color: #e34343
+}
+
+.jfCard-index {
+    color: #7c8d9f
+}
+
+.iconSvg.overview svg {
+    fill: #7c8d9f
+}
+
+@media screen and (max-width: 736px) {
+    .jfProgress-item.isActive .jfProgress-itemCircle {
+        background-color: rgba(0, 0, 0, .7)
+    }
+    .jfProgress-item.hasError .jfProgress-itemCircle {
+        background-color: #e34343
+    }
+    .jfProgress-itemLabel {
+        line-height: 44px;
+        background-color: transparent;
+        color: rgba(0, 0, 0, .7)
+    }
+    .jfProgress-itemCell {
+        background: #fff
+    }
+    .jfProgress-itemCell:last-child .jfProgress-item {
+        text-align: center
+    }
+    .formMode.isMobile .jfProgress {
+        background-color: #f0a719
+    }
+    .formMode.isMobile.onScrollMode .jfProgress {
+        background: url('https://www.jotform.com/uploads/anil/form_files/bryan-minear-315773.901.jpg');
+        background-repeat: no-repeat;
+        background-position: 50%
+    }
+}
+
+.isEmbed.isSmartEmbed .jfProgress#cardProgress,
+.isEmbed.isSmartEmbed .formFooter,
+.isEmbed.isSmartEmbed .jfWelcome-wrapper {
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease
+}
+
+.isEmbed.isSmartEmbed .jfProgress {
+    z-index: 1
+}
+
+.isEmbed.isSmartEmbed.onScrollMode .jfCard-index {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35)
+}
+
+.isEmbed.isSmartEmbed.formMode .formFooter {
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+    -webkit-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    transform: translateY(100%)
+}
+
+.isEmbed.isSmartEmbed.formMode .formFooter ~ .jfProgress {
+    bottom: 0
+}
+
+.isEmbed.isSmartEmbed.isSmartEmbedCleanState .jfProgress#cardProgress {
+    bottom: 0;
+    -webkit-transform: translate(-50%, 100%);
+    -ms-transform: translate(-50%, 100%);
+    transform: translate(-50%, 100%);
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+    overflow: hidden
+}
+
+.isEmbed.isSmartEmbed.isSmartEmbedCleanState .jfWelcome-wrapper {
+    top: 0;
+    -webkit-transform: translate(-50%, -100%);
+    -ms-transform: translate(-50%, -100%);
+    transform: translate(-50%, -100%);
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+    overflow: hidden
+}
+
+.isEmbed.isSmartEmbed.isSmartEmbedCleanState .jfWelcome-wrapper .jfWelcome-header {
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease
+}
+
+@media screen and (max-width: 736px) {
+    .isEmbed.isSmartEmbed.formMode .jfWelcome {
+        margin: 0 3%
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .isEmbed.isSmartEmbed.formMode .jfWelcome {
+        margin: 0 3%
+    }
+}
+
+.isEmbed.isSmartEmbed.welcomeMode .jfWelcome,
+.isEmbed.isSmartEmbed.sectionHeaderMode .jfWelcome {
+    width: auto !important
+}
+
+.isEmbed.isSmartEmbed:not(.welcomeMode):not(.sectionHeaderMode) .jfWelcome-wrapper {
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+    top: 0;
+    font-size: 1.8em
+}
+
+.isEmbed.isSmartEmbed:not(.welcomeMode):not(.sectionHeaderMode) .jfWelcome-wrapper div.jfWelcome {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    margin: 0
+}
+
+.isEmbed.isSmartEmbed:not(.onScrollMode) .jfProgress-info {
+    position: relative;
+    height: 100%;
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease
+}
+
+.isEmbed.isSmartEmbed:not(.onScrollMode) .jfProgress-info .jfProgress-infoContent {
+    margin-bottom: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.25s ease, -webkit-transform 0;
+    transition: all 0.25s ease, -webkit-transform 0;
+    -o-transition: all 0.25s ease, transform 0;
+    transition: all 0.25s ease, transform 0;
+    transition: all 0.25s ease, transform 0, -webkit-transform 0
+}
+
+.isEmbed.isSmartEmbed:not(.onScrollMode) .jfProgress-info .jfProgress-infoContent.jfProgress-sacl {
+    left: 62%
+}
+
+.isEmbed.isSmartEmbed .jfCard {
+    -webkit-box-shadow: 0 10px 50px 16.6666666667px rgba(0, 0, 0, .12);
+    box-shadow: 0 10px 50px 16.6666666667px rgba(0, 0, 0, .12)
+}
+
+.isEmbed.isSmartEmbed .iconSvgStroke {
+    stroke: #fff
+}
+
+.jfProgressLine {
+    display: none
+}
+
+.forMiniCard .jfWelcome-image svg {
+    min-height: 90px
+}
+
+.welcomeMode.forMiniCard .formFooter,
+.sectionHeaderMode.forMiniCard .formFooter,
+.welcomeMode.isMobile .formFooter {
+    display: none
+}
+
+.formMode.forMiniCard .jfWelcome-wrapper {
+    display: none
+}
+
+.formMode.forMiniCard .jfForm-wrapper {
+    padding: 0 0 52px !important;
+    background: none
+}
+
+.formMode.forMiniCard .jfCard-question,
+.formMode.forMiniCard .jfReview-content {
+    padding: 1.5em 1.8em 0.7em;
+    background-color: transparent;
+    border-radius: 0;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%
+}
+
+.formMode.forMiniCard .jfCard-actions {
+    display: none
+}
+
+.formMode.forMiniCard .jfQuestion-fields {
+    max-height: none !important
+}
+
+.formMode.forMiniCard .jfQuestion-fullscreen {
+    display: none !important
+}
+
+.formMode.forMiniCard .jfCard {
+    font-size: 16px;
+    margin: 0;
+    top: 0;
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
+.formMode.forMiniCard .jfCard[data-type="control_matrix"] .jfQuestion-fields {
+    padding-bottom: 1px
+}
+
+.formMode.forMiniCard .jfCard .jfQuestion-fields[data-component="radio"],
+.formMode.forMiniCard .jfCard .jfQuestion-fields[data-component="checkbox"] {
+    margin-bottom: 0;
+    padding-bottom: 1px;
+    padding-top: 1px
+}
+
+.formMode.forMiniCard .jfCard:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle
+}
+
+.formMode.forMiniCard .jfCard-wrapper.isVisible .jfCard {
+    z-index: 5;
+    display: block
+}
+
+.formMode.forMiniCard .jfCard-wrapper.prevQuestion,
+.formMode.forMiniCard .jfCard-wrapper.nextQuestion {
+    opacity: 1;
+    visibility: visible
+}
+
+.formMode.forMiniCard .jfCard-wrapper.prevQuestion .jfCard,
+.formMode.forMiniCard .jfCard-wrapper.nextQuestion .jfCard {
+    display: block
+}
+
+.formMode.forMiniCard .jfCard-wrapper.prevQuestion .jfCard {
+    -webkit-transform: translateX(0%) scale(1);
+    -ms-transform: translateX(0%) scale(1);
+    transform: translateX(0%) scale(1);
+    z-index: 4
+}
+
+.formMode.forMiniCard .jfCard-wrapper.nextQuestion .jfCard {
+    -webkit-transform: translateX(0%) scale(1);
+    -ms-transform: translateX(0%) scale(1);
+    transform: translateX(0%) scale(1);
+    z-index: 4
+}
+
+.formMode.forMiniCard .jfProgressLine-inner {
+    height: 4px;
+    display: block;
+    -webkit-transition: width 0.25s ease;
+    -o-transition: width 0.25s ease;
+    transition: width 0.25s ease;
+    background-color: #666
+}
+
+.formMode.forMiniCard .jfProgressLine {
+    display: block;
+    position: absolute;
+    top: -4px;
+    background-color: #ccc;
+    width: 100%
+}
+
+.formMode.forMiniCard .jfProgress {
+    height: 48px;
+    fill: #fff;
+    background-image: url('https://www.jotform.com/uploads/anil/form_files/bryan-minear-315773.901.jpg');
+    background-repeat: no-repeat;
+    background-position: 50%
+}
+
+.formMode.forMiniCard .jfInput-button.forMobileNav svg {
+    fill: #fff;
+    fill: #fff
+}
+
+.formMode.forMiniCard .jfInput-button.forMobileNav:not(.forSubmit) {
+    background: transparent;
+    padding: 1em 1.2em
+}
+
+.formMode.forMiniCard .jfInput-button.forMobileNav:not(.forSubmit) .iconSvg svg {
+    height: 18px;
+    width: 10px
+}
+
+.formMode.forMiniCard .formFooter {
+    display: none
+}
+
+.formMode.forMiniCard .formFooter ~ .jfProgress {
+    bottom: 0
+}
+
+.formMode.forMiniCard .jfProgress-statusIcon,
+.formMode.forMiniCard .jfProgress-mobileNavigation {
+    display: block !important
+}
+
+.formMode.forMiniCard .form-button-error,
+.formMode.forMiniCard .jfProgress-item div.jfProgress-itemCircle {
+    display: none
+}
+
+.formMode.forMiniCard.sectionHeaderMode .formFooter {
+    display: none
+}
+
+.formMode.forMiniCard.reviewMode .formFooter {
+    display: none
+}
+
+.formMode.forMiniCard span.jfProgress-infoContent {
+    display: none
+}
+
+.formMode.forMiniCard .jfProgress-itemLabel {
+    text-align: left;
+    padding: 0 15px 0 42px
+}
+
+.formMode.forMiniCard .jfProgress .jfProgress-infoContent {
+    margin: 0.5em 0;
+    padding: 0.5em 0.6em
+}
+
+body,
+html {
+    position: fixed;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0)
+}
+
+body:not(.JotFormCardBuilder),
+body.jfCardForm {
+    font-family: "Roboto"
+}
+
+body:not(.JotFormCardBuilder) input,
+body.jfCardForm input,
+body:not(.JotFormCardBuilder) textarea,
+body.jfCardForm textarea,
+body:not(.JotFormCardBuilder) select,
+body.jfCardForm select,
+body:not(.JotFormCardBuilder) button,
+body.jfCardForm button {
+    font-family: "Roboto"
+}
+
+.formPage-container > .formPage-each > .formPage-stage,
+.welcome-page-content {
+    font-family: "Roboto"
+}
+
+* {
+    outline: none
+}
+
+*::-ms-clear {
+    display: none
+}
+
+body.thankyouMode {
+    background-image: url('https://www.jotform.com/uploads/anil/form_files/bryan-minear-315773.901.jpg');
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover
+}
+
+.jfWelcome-header,
+.jfThankYou-header,
+.jfHeading-header,
+.emptyNotification-header {
+    color: #fff
+}
+
+.jfWelcome-description,
+.jfThankYou-description,
+.jfHeading-description,
+.emptyNotification-description,
+.jfWelcome-sectionInfo,
+.jfThankYou-sectionInfo,
+.jfHeading-sectionInfo,
+.emptyNotification-sectionInfo {
+    color: #fff
+}
+
+.jfWelcome-button,
+.jfThankYou-button,
+.jfHeading-button,
+.emptyNotification-button {
+    color: #fff;
+    background-color: #f0a719;
+    border-radius: 0 0 6px 6px
+}
+
+.formMode .jfForm-backgroundContainer,
+.welcomeMode .jfForm-backgroundContainer,
+.thankyouMode .jfForm-backgroundContainer,
+.reviewMode .jfForm-backgroundContainer,
+.sectionHeaderMode .jfForm-backgroundContainer {
+    background-image: url('https://www.jotform.com/uploads/anil/form_files/bryan-minear-315773.901.jpg')
+}
+
+.formMode .jfForm-backgroundOverlay,
+.welcomeMode .jfForm-backgroundOverlay,
+.thankyouMode .jfForm-backgroundOverlay,
+.reviewMode .jfForm-backgroundOverlay,
+.sectionHeaderMode .jfForm-backgroundOverlay {
+    background: rgba(0, 0, 0, 0)
+}
+
+.formMode .jfForm-backgroundUnderlay,
+.welcomeMode .jfForm-backgroundUnderlay,
+.thankyouMode .jfForm-backgroundUnderlay,
+.reviewMode .jfForm-backgroundUnderlay,
+.sectionHeaderMode .jfForm-backgroundUnderlay {
+    background-image: url("data:image/jpeg;base64,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")
+}
+
+.jfWelcome-header,
+.jfThankYou-header,
+.jfHeading-header,
+.sectionHeaderMode-header {
+    font-size: 1em;
+    font-weight: 500
+}
+
+.formMode .jfWelcome-header,
+.formMode .jfThankYou-header,
+.formMode .jfHeading-header,
+.formMode .sectionHeaderMode-header {
+    font-size: 1em
+}
+
+.jfWelcome-description,
+.jfThankYou-description,
+.jfHeading-description,
+.sectionHeaderMode-description {
+    font-size: 0.8em;
+    font-weight: 300
+}
+
+.jfWelcome-sectionInfo,
+.jfThankYou-sectionInfo,
+.jfHeading-sectionInfo,
+.sectionHeaderMode-sectionInfo {
+    font-size: 0.7em
+}
+
+.jfWelcome-button,
+.jfThankYou-button,
+.jfHeading-button,
+.sectionHeaderMode-button {
+    font-size: 1em
+}
+
+.iconSvgStroke {
+    stroke: #fff
+}
+
+.iconSvgFill {
+    fill: #fff
+}
+
+.emptyNotification-header {
+    font-size: 1.2em
+}
+
+.formMode .jfWelcome {
+    text-align: center
+}
+
+.formMode .jfWelcome-header,
+.formMode .jfWelcome-description {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease
+}
+
+.jfProgress-formError {
+    color: #fff;
+    color: #fff
+}
+
+.jfForm-logo {
+    opacity: 1
+}
+
+.jfWelcome-wrapper.isHeader .jfWelcome-buttonWrapper {
+    display: inline-block;
+    border-radius: 0 0 0 6px
+}
+
+.jfWelcome-wrapper.isHeader .jfWelcome-buttonWrapper + .jfWelcome-buttonWrapper {
+    border-radius: 0 0 6px 0
+}
+
+.formMode .jfWelcome-wrapper.isHeader .jfWelcome-buttonWrapper {
+    display: none
+}
+
+.jfWelcome-wrapper.isHeader.noPrevButton .jfWelcome-buttonWrapper + .jfWelcome-buttonWrapper {
+    border-radius: 0 0 6px 6px
+}
+
+.jfWelcome-image {
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease
+}
+
+.jfWelcome-image.collapse {
+    max-height: 0;
+    opacity: 0
+}
+
+.jfField-sublabel {
+    color: #999
+}
+
+.jfRequiredStar,
+.jfCard-mobileError,
+.form-line.form-line-error .jfQuestion-label {
+    color: #e34343
+}
+
+.jfInput-input::-webkit-input-placeholder,
+.jfInput-textarea::-webkit-input-placeholder {
+    color: #bfc9d4
+}
+
+.jfInput-input:-ms-input-placeholder,
+.jfInput-textarea:-ms-input-placeholder {
+    color: #bfc9d4
+}
+
+.jfInput-input::placeholder,
+.jfInput-textarea::placeholder {
+    color: #bfc9d4
+}
+
+.jfInput-input.form-validation-error,
+.jfInput-textarea.form-validation-error {
+    border-color: #e34343
+}
+
+.jfInput-dropdown.form-validation-error {
+    border-color: #e34343
+}
+
+.jfTextarea-editor[contenteditable]:focus::-webkit-input-placeholder,
+.jfTextarea-editor[contenteditable]:active::-webkit-input-placeholder {
+    color: #bfc9d4
+}
+
+.jfTextarea-editor[contenteditable]:focus:-ms-input-placeholder,
+.jfTextarea-editor[contenteditable]:active:-ms-input-placeholder {
+    color: #bfc9d4
+}
+
+.jfTextarea-editor[contenteditable]:focus::placeholder,
+.jfTextarea-editor[contenteditable]:active::placeholder {
+    color: #bfc9d4
+}
+
+.jfRequiredStar-message {
+    background-color: rgba(0, 0, 0, .7);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 3px
+}
+
+.jfInput-button {
+    border: 2px solid #646464;
+    background-color: #4a4a4a
+}
+
+.jfInput-button.forPrev-heading[disabled],
+.jfInput-button.forNext-heading[disabled] {
+    opacity: 0.5
+}
+
+.jfInput-button.forPrev,
+.jfInput-button.forPrev-heading,
+.jfInput-button.forBackToForm {
+    color: rgba(255, 255, 255, .7)
+}
+
+.jfInput-button.forPrev[disabled],
+.jfInput-button.forPrev-heading[disabled],
+.jfInput-button.forBackToForm[disabled] {
+    opacity: 0.5
+}
+
+.jfInput-button.forMobileNav.forPrev .iconSvg svg {
+    fill: #fff
+}
+
+.jfInput-button.forMobileNav.forNext .iconSvg svg {
+    fill: #fff
+}
+
+.jfInput-button.forNext,
+.jfInput-button.forNext-heading {
+    color: #fff;
+    border-radius: 0 0 3px 0
+}
+
+.jfInput-button.forNext:hover,
+.jfInput-button.forNext-heading:hover {
+    border-color: #e5b75b
+}
+
+.jfInput-button.forNext[disabled],
+.jfInput-button.forNext-heading[disabled] {
+    opacity: 0.5
+}
+
+.jfInput-button.form-submit-button,
+.jfInput-button.forReview,
+.jfInput-button.forReviewButton {
+    color: #fff;
+    border-radius: 3px;
+    background: #e1990f
+}
+
+.jfInput-button.form-submit-button:not(.forMobileNav),
+.jfInput-button.forReview:not(.forMobileNav),
+.jfInput-button.forReviewButton:not(.forMobileNav) {
+    border-radius: 0 0 3px 0
+}
+
+.jfInput-button.form-submit-button:hover,
+.jfInput-button.forReview:hover,
+.jfInput-button.forReviewButton:hover {
+    background-color: #e1990f
+}
+
+.jfInput-button.form-submit-button:focus,
+.jfInput-button.forReview:focus,
+.jfInput-button.forReviewButton:focus {
+    background-color: #d7930e
+}
+
+.jfCard {
+    -webkit-box-shadow: 0 10px 50px 16.6666666667px rgba(0, 0, 0, .12);
+    box-shadow: 0 10px 50px 16.6666666667px rgba(0, 0, 0, .12);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0)
+}
+
+.jfCard-actions {
+    border-radius: 0 0 6px 6px;
+    background-color: #f0a719
+}
+
+.sacl-state-text {
+    background-color: rgba(0, 0, 0, .35)
+}
+
+.jfProgress .jfProgress-infoContent {
+    background-color: rgba(0, 0, 0, .35);
+    color: #fff;
+    display: inline-block
+}
+
+.jfProgress .jfProgress-infoContent.forNew:hover {
+    background-color: rgba(38, 38, 38, .35)
+}
+
+.jfProgress .jfProgress-infoContent.isUntouched:before,
+.jfProgress .jfProgress-infoContent.isUntouched:after {
+    -webkit-animation-name: overviewButtonPulse;
+    animation-name: overviewButtonPulse
+}
+
+@-webkit-keyframes overviewButtonPulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.175);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.175)
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0)
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0)
+    }
+}
+
+@keyframes overviewButtonPulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.175);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.175)
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0)
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0)
+    }
+}
+
+.jfRadio-label,
+.jfCheckbox-label,
+.jfInput-dropdown,
+.jfInput-input,
+.jfInput-textarea {
+    border-radius: 3px
+}
+
+.jfCard-question,
+.jfReview-content {
+    border-radius: 6px 6px 0 0;
+    background-color: #fff
+}
+
+.jfDropdown-toggle {
+    border-radius: 0 4px 4px 0
+}
+
+.jfDropdown-chip {
+    border-radius: 4px
+}
+
+.jfDropdown-chip .removeChip {
+    border-radius: 2px
+}
+
+.jfDropdown-optionListWrapper {
+    border-radius: 0 0 3px 3px
+}
+
+@media screen and (max-width: 736px) {
+    .jfForm-wrapper.hasTouch select.form-dropdown {
+        border-radius: 3px
+    }
+}
+
+.jfMatrix.forMobile {
+    border-radius: 3px
+}
+
+[class*="-hosted-fields"] {
+    border-radius: 2.4px
+}
+
+.jfProgress-itemCell {
+    border-radius: 2.25px
+}
+
+.jfProduct-detail.form-product-item-detail {
+    border-radius: 3px
+}
+
+.jfProductDetail.forPrice {
+    border-radius: 3px
+}
+
+.buttonMenu-caret {
+    border-left: 2px solid #e2ad45
+}
+
+.buttonMenu.isOpen .buttonMenu-caret {
+    background-color: #dea32f
+}
+
+.jfThankYou-wrapper:before {
+    background: rgba(0, 0, 0, 0.87)
+}
+
+.cf-minimal .jfForm-background-mask {
+    background: rgba(0, 0, 0, 0.87);
+    border-radius: 6px
+}
+
+.cf-minimal.sectionHeaderMode .jfWelcome-wrapper.isHeader .jfWelcome-buttonWrapper {
+    background: #f0a719
+}
+
+.cf-minimal.sectionHeaderMode .jfWelcome-wrapper.isHeader .jfWelcome-buttonWrapper:hover {
+    background: #b1790c
+}
+
+.cf-minimal.JotFormCardBuilder .welcome-page-content,
+.cf-minimal.JotFormCardBuilder .thankyou-page-content {
+    background: rgba(0, 0, 0, 0.87)
+}
+
+.cf-minimal.JotFormCardBuilder .jfCard[data-type="control_head"] .jfHeading-buttonWrapper {
+    background: #f0a719
+}
+
+.cf-minimal .jfWelcome-button:not(.forPrev-heading):not(.forNext-hading):after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3e%3cg fill='none' fill-rule='evenodd' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3e%3cpath d='M1.7797 8.0199h20.9252l-6.2016 6.2016'/%3e%3cpath d='M16.806 1.308l5.8236 6.5842-2.9118 3.0499'/%3e%3c/g%3e%3c/svg%3e");
+    right: -0.7em
+}
+
+.cf-minimal .jfInput-button:not(.forMobileNav).forNext:after,
+.cf-minimal .jfInput-button:not(.forMobileNav).forNext-heading:after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3e%3cg fill='none' fill-rule='evenodd' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3e%3cpath d='M1.7797 8.0199h20.9252l-6.2016 6.2016'/%3e%3cpath d='M16.806 1.308l5.8236 6.5842-2.9118 3.0499'/%3e%3c/g%3e%3c/svg%3e");
+    right: -0.7em
+}
+
+.cf-minimal .jfInput-button:not(.forMobileNav).forPrev:before,
+.cf-minimal .jfInput-button:not(.forMobileNav).forPrev-heading:before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3e%3cg fill='none' fill-rule='evenodd' stroke='rgba(255, 255, 255, .7)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3e%3cpath d='M22.2203 8.0199H1.2951l6.2016 6.2016'/%3e%3cpath d='M7.194 1.308L1.3704 7.8922l2.9118 3.0499'/%3e%3c/g%3e%3c/svg%3e");
+    right: 0.7em
+}
+
+.cf-minimal .jfInput-button:not(.forMobileNav).forPrev:hover,
+.cf-minimal .jfInput-button:not(.forMobileNav).forPrev-heading:hover {
+    color: #fff
+}
+
+.cf-minimal .jfInput-button:not(.forMobileNav).forPrev:hover:before,
+.cf-minimal .jfInput-button:not(.forMobileNav).forPrev-heading:hover:before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3e%3cg fill='none' fill-rule='evenodd' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3e%3cpath d='M22.2203 8.0199H1.2951l6.2016 6.2016'/%3e%3cpath d='M7.194 1.308L1.3704 7.8922l2.9118 3.0499'/%3e%3c/g%3e%3c/svg%3e");
+    right: 0.7em
+}

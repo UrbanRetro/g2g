@@ -4,36 +4,81 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Grape2Glass</title>
-	<link rel="icon" type="image/png" href="assets/images/Black_Short_WEB.png" />
-	<link rel="stylesheet" type="text/css" href="assets/css/style-index.css">
+	<link rel="stylesheet" href="assets/css/resultats.css" />
+	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="icon" type="image/png" href="images/logo/Black_Short_WEB.png" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
+	<?php
+	include("GA.php")
+	?>
 
-	<div style="margin:20px;">
-	<p>Bonjour !</p>
+	<div class="body_container">
 
-	<p>Tu recherches un bar de type <b><?php echo htmlspecialchars($_POST['categorie']); ?></b> avec une ambiance <?php 
-		foreach($_POST['ambiance'] as $ambiance) 
-			echo '<b>' . $ambiance . '</b>' . ', ' ;
-		?>
-		pour y aller <b><?php echo htmlspecialchars($_POST['occasion'])?></b> </p>
+		<nav>
 
-	<p>le bar idéal a les caractéristiques suivantes : <?php
-		foreach ($_POST['feature'] as $feature)
-			echo '<b>' . $feature . '</b>' . ', ' ;
-		?>
-	</p>
+			<!-- For Desktop-->
+			<div class="nav_container">
+				<div class="bloc_nav">
+					<a href="index.php" title="Home">Grape2Glass Discovery @Paris</a>
+				</div>
 
-	<p>Si tu veux changer de description, <a href="index.php">clique ici</a> pour revenir à la page formulaire.php.</p></div>
-	<hr>
+				<div class="bloc_nav">
+					<ul>
+						<li><a href="http://www.grape2glass.fr/blog/" target="_blank" title="Blog">Blog</a></li>
+						<li><a href="https://www.instagram.com/drinker_diary/" target="_blank" title="Instagram">Instagram</a></li>
+						<li><a href="https://www.linkedin.com/company/grape2glass/" target="_blank" title="Linkedin">LinkedIn</a></li>
+					</ul>
+				</div>
+			</div>
 
-<?php
-	include("config.php");
-?>
+			<!-- For Smartphone-->
+			<div class="nav_container">
+				<h3 class="bloc_nav">
+					<a href="index.php" title="Home">Grape2Glass Discovery @Paris</a>
+				</h3>
+			</div>
+
+		</nav>
+
+		<header>
+			<div class="bloc_header">
+				<a href="index.php" title="Home">
+					<img src="assets/images/logo/White_Short_WEB.png" alt="logo G2G">
+				</a>
+			</div>
+		</header>
+
+		<section>
+			<div class="section_container">
+				<div class="section_bloc">
+
+					<p>Vos critères de recherche sont les suivants :</p>
+
+					<p>Catégorie : <b><?php echo htmlspecialchars($_POST['categorie']); ?></b></p>
+
+					<p>Ambiance(s) : <b><?php echo htmlspecialchars($_POST['ambiance1'])?></b> <b><?php echo htmlspecialchars($_POST['ambiance2'])?></b> <b><?php echo htmlspecialchars($_POST['ambiance3'])?></b></p>
+
+					<p>Occasion : <b><?php echo htmlspecialchars($_POST['occasion'])?></b></p>
+
+					<p>Option(s) : <b><?php echo htmlspecialchars($_POST['feature1'])?></b> <b><?php echo htmlspecialchars($_POST['feature2'])?></b> <b><?php echo htmlspecialchars($_POST['feature3'])?></b></p>
+				</div>
+
+				<div class="section_bloc">
+					<div id="backbutton"><a href="index.php" title="Retour à la sélection">Retour</a></div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="recommendations">
+
+		<div class="bloc_recommendations">
+
+			<?php include("config.php");?>
 
 	<?php
 
@@ -43,7 +88,7 @@
 	);
 	$rrr = $reponse->execute(
 		array($_POST['categorie'], $_POST['categorie'])
-	); 
+	);
 
 	while ($donnees = $reponse->fetch(PDO::FETCH_ASSOC)) {
 
@@ -67,7 +112,7 @@ $taille_arguments = $nbr_ambiances + $nbr_occasions + $nbr_features;
 
 
 
-foreach ($monTableau as $key => $value) 
+foreach ($monTableau as $key => $value)
 {
 	//comparaison des caractéristiques des bars et des demandes de l'utilisateur, attribution des points
 	$interesection_ambiances = array_intersect($ambiances, $value['ambiances']);
@@ -85,9 +130,16 @@ function sort_values($a, $b){
 usort($monTableau, "sort_values");
 //echo json_encode($monTableau, JSON_PRETTY_PRINT);
 
+?>
 
 
-echo "<ol>";
+<div class="container-fluid">
+
+<div class="row">
+
+<ol class ="col-md-8">
+
+<?php
 
 //initialisation du compteur
 $cpt = 0;
@@ -98,7 +150,7 @@ if(!$monTableau){
 	echo "Nous n'avons pas trouvé de résultats";
 }
 
-foreach ($monTableau as $key => $value) 
+foreach ($monTableau as $key => $value)
 {
 	//on visualise si le compteur est bien inférieur à 5
 	if ($cpt < 5)
@@ -125,7 +177,7 @@ foreach ($monTableau as $key => $value)
 			//Création d'un tableau associant le nom du bar et sa position geographique
 			$info_maps[] = ['coordinates' => $position['features'][0]['geometry']['coordinates'], 'Name' => $value['Name']];
 
-			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : '; 
+			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : ';
 
 			if($value['Category_1'] == $_POST['categorie']) {
 				echo '<span class="underline">' . $value['Category_1'] . '</span>';
@@ -133,7 +185,7 @@ foreach ($monTableau as $key => $value)
 			else{
 				echo $value['Category_1'];
 			}
-			
+
 			//si la Category_2 existe, alors on l'affiche
 			if(!empty($value['Category_2'])){
 				//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
@@ -144,7 +196,7 @@ foreach ($monTableau as $key => $value)
 				echo ' & ' . $value['Category_2'];
 				}
 			}
-			
+
 			echo '<br> L\'ambiance y est :  ';
 			//Si la valeur est la même que celle demandée par l'utilisateur, alors je souligne
 			if($value['Ambiance_1'] == $ambiances[0] OR $value['Ambiance_1'] == $ambiances[1] OR $value['Ambiance_1'] == $ambiances[2]){
@@ -195,7 +247,7 @@ foreach ($monTableau as $key => $value)
 					else{
 					echo ' et ' . $value['Feature_3'];
 					}
-				}	
+				}
 				echo '<br>';
 			}
 
@@ -205,7 +257,7 @@ foreach ($monTableau as $key => $value)
 
 				if ($value['Occasion_1'] == $_POST['occasion']) {
 				 	echo '<span class="underline">' . $value['Occasion_1'] . '</span>';
-				 } 
+				 }
 				 else{
 				 	echo $value['Occasion_1'];
 				 }
@@ -267,11 +319,15 @@ foreach ($monTableau as $key => $value)
 	}
 	echo "</li>";
 }
-echo "</ol>";
-?>
+echo "</ol>";?>
+
 
 <!-- Appel de la carte Gmap-->
-<div id="map"></div>
+<div class="col-md-4">
+	<div id="map"></div>
+</div>
+</div><!-- Fin div row-->
+</div><!-- Fin div Wrapper -->
 <?php
 
 //Début du script Gmap
@@ -285,7 +341,7 @@ echo "</ol>";
               // for display.
               var map = new google.maps.Map(document.getElementById('map'), {
                 center: myLatLng,
-                zoom: 13
+                zoom: 12.01
               });";
 
     //Récuperation des infos de geolocalisation des bars
@@ -301,7 +357,7 @@ echo "</ol>";
     	echo "var infowindow_$i = new google.maps.InfoWindow({
           content: contentString_$i
         	});";
-		
+
         echo "// Create a marker and set its position.
                 var marker_$i = new google.maps.Marker({
                   map: map,
@@ -312,7 +368,7 @@ echo "</ol>";
         echo "marker_$i.addListener('click', function() {
           infowindow_$i.open(map, marker_$i);
         });";
-				
+
   	}
       echo "}</script>";
  ?>
@@ -321,7 +377,6 @@ echo "</ol>";
 <?php
 include("footer.php");
 ?>
-
 <!-- API Key pour Gmap -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD12uBzc9KfSwdhQ7HcqGE1KYenmITS180&callback=initMap"
         async defer></script>
