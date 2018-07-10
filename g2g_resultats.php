@@ -65,6 +65,8 @@
 					<p>Occasion : <b><?php echo htmlspecialchars($_POST['occasion'])?></b></p>
 
 					<p>Option(s) : <b><?php echo htmlspecialchars($_POST['feature1'])?></b> <b><?php echo htmlspecialchars($_POST['feature2'])?></b> <b><?php echo htmlspecialchars($_POST['feature3'])?></b></p>
+
+					<p>Arrondissement : <b><?php echo htmlspecialchars($_POST['arrondissement'])?></b></p>
 				</div>
 
 				<div class="section_bloc">
@@ -84,44 +86,58 @@
 
 	$reponse = $bdd->prepare(
 		'SELECT *
-		FROM BARS2 WHERE (Category_1 = ? OR Category_2 = ?)'
+		FROM BARS3 WHERE (Category_1 = ? OR Category_2 = ?)'
 	);
 	$rrr = $reponse->execute(
 		array($_POST['categorie'], $_POST['categorie'])
 	);
 
 	while ($donnees = $reponse->fetch(PDO::FETCH_ASSOC)) {
-
+		//je fais un tableau regroupant toutes mes données en bdd
 	$donnees['ambiances'] = array_filter([$donnees['Ambiance_1'], $donnees['Ambiance_2'], $donnees['Ambiance_3']]);
 	$donnees['occasions'] = array_filter([$donnees['Occasion_1'], $donnees['Occasion_2'], $donnees['Occasion_3'], $donnees['Occasion_4'], $donnees['Occasion_5']]);
 	$donnees['features']  = array_filter([$donnees['Feature_1'], $donnees['Feature_2'], $donnees['Feature_3']]);
+	$donnees['arrondissement'] = array_filter($donnees['Arrondissement']);
 
 	$monTableau[] = $donnees;
 	}
-
-$ambiances = $_POST['ambiance'];
-$occasions = $_POST['occasion'];
-$features  = $_POST['feature'];
+		//je compare ce qu'a demandé l'utilisateur et les données en bdd
+	$ambiances = array_filter([$_POST['ambiance1'], $_POST['ambiance2'], $_POST['ambiance3']]);
+	$occasions = array_filter([$_POST['occasion']]);
+	$features  = array_filter([$_POST['feature1'], $_POST['feature2'], $_POST['feature3']]);
+	$arrondissement = array_filter($_POST['arrondissement']);
 
 $nbr_ambiances = count($ambiances);
 $nbr_occasions = count($occasions);
 $nbr_features = count($features);
+$nbr_arrondissement = count($arrondissement);
 
 //Calcul du nombre d'arguments donnés par l'utilisateur
-$taille_arguments = $nbr_ambiances + $nbr_occasions + $nbr_features;
-
+$taille_arguments = $nbr_ambiances + $nbr_occasions + $nbr_features + $nbr_arrondissement;
 
 
 foreach ($monTableau as $key => $value)
-{
-	//comparaison des caractéristiques des bars et des demandes de l'utilisateur, attribution des points
-	$interesection_ambiances = array_intersect($ambiances, $value['ambiances']);
-	$interesection_occasions = array_intersect($occasions, $value['occasions']);
-	$interesection_features	 = array_intersect($features, $value['features']);
+	{
 
-	$monTableau[$key]['value'] = count($interesection_ambiances) + count($interesection_occasions) + count($interesection_features);
+		$intersection_ambiances = array_intersect($ambiances, $value['ambiances']);
+		$intersection_occasions = array_intersect($occasions, $value['occasions']);
+		$intersection_features	 = array_intersect($features, $value['features']);
+		$intersection_arrondissement = array_intersect($arrondissement, $value['arrondissement']);
 
-}
+		$points_ambiances = (count($intersection_ambiances) * 1);
+		$points_occasions = (count($intersection_occasions) * 1);
+		$points_feature = (count($intersection_features) * 1);
+		$points_arrondissement = (count($intersection_arrondissement) * 2);
+
+		$monTableau[$key]['value'] = $points_ambiances + $points_occasions + $points_feature + $points_arrondissement;
+		$monTableau[$key]['points_ambiances'] = $points_ambiances;
+		$monTableau[$key]['value_occasions'] = $points_occasions;
+		$monTableau[$key]['value_feature'] = $points_feature;
+		$monTableau[$key]['value_arrondissement'] = $points_arrondissement;
+
+		echo $intersection_arrondissement;
+
+	}
 
 function sort_values($a, $b){
 	return $a["value"]<$b["value"]?1:0;
@@ -129,7 +145,6 @@ function sort_values($a, $b){
 
 usort($monTableau, "sort_values");
 //echo json_encode($monTableau, JSON_PRETTY_PRINT);
-
 ?>
 
 
@@ -175,9 +190,14 @@ foreach ($monTableau as $key => $value)
 			$position = json_decode(file_get_contents("https://api-adresse.data.gouv.fr/search/?q=" . str_replace(' ', '+', $value['Address'])), true);
 
 			//Création d'un tableau associant le nom du bar et sa position geographique
-			$info_maps[] = ['coordinates' => $position['features'][0]['geometry']['coordinates'], 'Name' => $value['Name']];
+			$info_maps[] = [
+			'coordinates' => $position['features'][0]['geometry']['coordinates'],
+			'Name' 				=> $value['Name'],
+			'categorie1'		=> $value['Category_1'],
+			'categorie2'		=> $value['Category_2']
+		];
 
-			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] . '<br>' . 'La categorie du bar est : ';
+			echo '<!-- ID=' . $value['ID'] . ', ' . $key . "-->" . '<b>' . $value['Name'] .'</b>, '. $value['Address'] .' '. '<a target="_blank" href=" ' .$value['Map'] . '">' .'(Map)' . '</a>'. '<br>' . 'La categorie du bar est : ';
 
 			if($value['Category_1'] == $_POST['categorie']) {
 				echo '<span class="underline">' . $value['Category_1'] . '</span>';
@@ -300,8 +320,7 @@ foreach ($monTableau as $key => $value)
 					}
 				}
 			}
-
-			echo '<br><br>' . '<p class="description">'. $value['Description'] . '</p> <span>' . 'Score : ' . $value['value'] . '</span>' . '</div>';
+			echo '<p><br>' . '<span style="font-style: italic;">'. $value['Description'] . '</span>' . '</p><p>' . '<!-- Score : ' . $value['value'] . '-->'. '<a target="_blank" href="' . $value['Site'] . '"> ' .'Site web' . '</a>' .'</p>' . '</div>';
 
 			echo "</li>";
 			//on incrémente le compteur
@@ -352,6 +371,7 @@ echo "</ol>";?>
             '<h1 id=\"firstHeading\" class=\"firstHeading\">" . $info['Name'] . "</h1>'+
             '<div id=\"bodyContent\">'+
             '</div>'+
+						'<p class=\"categorie1\">" . $info['categorie1'] . "</p>'+
             '</div>';";
 
     	echo "var infowindow_$i = new google.maps.InfoWindow({
